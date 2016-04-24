@@ -1,0 +1,23 @@
+<div ng-repeat="inf in $ctrl.data.infimiers">
+
+<md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{inf.nom + ' ' + inf.prenom}}</span>
+            <span class="md-subhead">identifiant : {{inf.id}}</span>
+            <span class="md-subhead">aucun patient affecté</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-lg card-media">
+				<img ng-src="{{inf.photo}}" 
+				     alt="Photo de {{inf.nom + ' ' + inf.prenom}}"/>
+				</div>
+          </md-card-title-media>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button>Affecter</md-button>
+          <md-button>Desaffecter</md-button>
+        </md-card-actions>
+</md-card>	
+
+</div>

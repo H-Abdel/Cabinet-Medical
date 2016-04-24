@@ -1,0 +1,17 @@
+<div>
+  <form novalidate class="simple-form">
+    nom: <input type="text" ng-model="$ctrl.newPatient.nom" /><br />
+    prenom: <input type="text" ng-model="$ctrl.newPatient.prenom" /><br />
+    sexe: <input type="radio" ng-model="$ctrl.newPatient.sexe" value="M" />male
+    <input type="radio" ng-model="$ctrl.newPatient.sexe" value="F" />female<br />
+    <input type="button" ng-click="$ctrl.reset()" value="Reset" />
+    <input type="submit" ng-click="$ctrl.ajouterNewPatient($ctrl.newPatient)" value="Save" />
+  </form>
+  <pre>newPatient = {{$ctrl.newPatient | json}}</pre>
+</div>
+
+<div ng-repeat="pat in $ctrl.newPatient">
+	{{pat}}
+</div>
+
+

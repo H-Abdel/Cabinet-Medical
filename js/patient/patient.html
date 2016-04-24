@@ -1,0 +1,41 @@
+<div>
+	Visualiser : 
+	<md-checkbox ng-model="data.tous" aria-label="Checkbox 1">
+            Tous les patients: {{ data.tous }}
+	</md-checkbox>
+	<md-checkbox ng-model="data.aff" aria-label="Checkbox 1">
+            Seulement les patients affectés: {{ data.aff }}
+	</md-checkbox>
+	<md-checkbox ng-model="data.nonAff" aria-label="Checkbox 1">
+            Uniquement les patients non affectés: {{ data.nonAff }}
+	</md-checkbox>
+</div>
+
+
+<div ng-repeat="pat in $ctrl.data.patients">
+
+<md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+        
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{pat.nom + ' ' + pat.prenom}}</span>
+            <span class="md-subhead">identifiant : {{pat.id}}</span>
+            <span>sexe : {{pat.sexe}}</span>
+			<span>date de naissance : {{pat.date}}</span>
+			<span>adresse : {{pat.adresse.rue +' '+ pat.adresse.ville +' '+ pat.adresse.codePostal}}</span>
+          </md-card-title-text>
+        </md-card-title>
+        
+        <md-card-content>
+			ID intervenant : {{pat.infirmier}}
+		</md-card-content>
+		
+		<md-card-actions layout="row" layout-align="end center">
+          <md-button>Affecter</md-button>
+          <md-button>Desaffecter</md-button>
+        </md-card-actions>
+        
+</md-card>	
+
+</div>
+
