@@ -188,7 +188,7 @@ function init(port, applicationServerIP, applicationServerPort) {
 					newPatient.appendChild( naissance );
 					// Visites
 					var visite = doc.createElement('visite');
-					visite.setAttribute('date', "2014-12-08");
+					visite.setAttribute('date', "20xx-02-31");
 					newPatient.appendChild( visite );
 					// Adress
 					var adresse = doc.createElement('adresse');

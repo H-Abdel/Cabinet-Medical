@@ -1,17 +1,20 @@
 <div>
   <form novalidate class="simple-form">
-    nom: <input type="text" ng-model="$ctrl.newPatient.nom" /><br />
-    prenom: <input type="text" ng-model="$ctrl.newPatient.prenom" /><br />
-    sexe: <input type="radio" ng-model="$ctrl.newPatient.sexe" value="M" />male
-    <input type="radio" ng-model="$ctrl.newPatient.sexe" value="F" />female<br />
-    <input type="button" ng-click="$ctrl.reset()" value="Reset" />
-    <input type="submit" ng-click="$ctrl.ajouterNewPatient($ctrl.newPatient)" value="Save" />
+    Nom: <input type="text" ng-model="$ctrl.newPatient.patientName" /><br />
+    Prenom: <input type="text" ng-model="$ctrl.newPatient.patientForname" /><br />
+    Sexe: <input type="radio" ng-model="$ctrl.newPatient.patientSex" value="M" />male
+    <input type="radio" ng-model="$ctrl.newPatient.patientSex" value="F" />female<br />
+    Date de naissance: <input type="text" ng-model="$ctrl.newPatient.patientBirthday" /><br />
+    Rue: <input type="text" ng-model="$ctrl.newPatient.patientStreet" /><br />
+    Ville: <input type="text" ng-model="$ctrl.newPatient.patientCity" /><br />
+    Code postal: <input type="text" ng-model="$ctrl.newPatient.patientPostalCode" /><br />
+    <input type="button" ng-click="$ctrl.reset( )" value="Reset" />
+    <input type="submit" ng-click="$ctrl.ajouterNewPatient( )" value="Save" />
   </form>
   <pre>newPatient = {{$ctrl.newPatient | json}}</pre>
 </div>
 
+
 <div ng-repeat="pat in $ctrl.newPatient">
-	{{pat}}
+  {{pat}}
 </div>
-
-

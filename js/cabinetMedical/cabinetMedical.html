@@ -1,43 +1,43 @@
-	<md-toolbar layout = "row">
-		<md-button class="menu" ng-href="#/home" layout="column">
-			<md-icon md-svg-src = "../../images/icons/home.svg"></md-icon>
-		</md-button>
-		<h1 layout="column"> Cabinet Pas Trop Medical</h1>
-	</md-toolbar>
+<md-toolbar layout = "row">
+  <md-button class="menu" ng-href="#/home" layout="column">
+    <md-icon md-svg-src = "../../images/icons/home.svg"></md-icon>
+  </md-button>
+  <h1 layout="column">Cabinet Pas Trop Médical</h1>
+</md-toolbar>
 
-	<div layout = "row" flex>
-		
-		<md-sidenav md-component-id="sidenav-left" md-is-locked-open="true">
+<div layout = "row" flex>
+  
+  <md-sidenav md-component-id="sidenav-left" md-is-locked-open="true">
 
-			<md-content layout-padding layout="column">
-				
-				<div layout=row>
-				<md-button ng-href="#/infirmiers">
-					<md-icon md-svg-src = "../../images/icons/interface.svg"></md-icon>
-					Infirmiers
-				</md-button>
-				</div>
-				<div layout="row">
-				<md-button ng-href="#/patients">
-					<md-icon md-svg-src = "../../images/icons/interface.svg"></md-icon>
-					Patients
-				</md-button>
-				</div>
-				<div layout="row">
-				<md-button ng-href="#/nouveauPat">
-					<md-icon md-svg-src = "../../images/icons/signs.svg"></md-icon>
-					Ajouter Nouveau Patient
-				</md-button>
-				</div>
-				
-			</md-content>
+    <md-content layout-padding layout="column">
+      
+      <div layout=row>
+	<md-button ng-href="#/infirmiers">
+	  <md-icon md-svg-src = "../../images/icons/interface.svg"></md-icon>
+	  Infirmiers
+	</md-button>
+      </div>
+      <div layout="row">
+	<md-button ng-href="#/patients">
+	  <md-icon md-svg-src = "../../images/icons/interface.svg"></md-icon>
+	  Patients
+	</md-button>
+      </div>
+      <div layout="row">
+	<md-button ng-href="#/nouveauPat">
+	  <md-icon md-svg-src = "../../images/icons/signs.svg"></md-icon>
+	  Ajouter Nouveau Patient
+	</md-button>
+      </div>
+      
+    </md-content>
 
-		</md-sidenav>
-	
-		<md-content id = "content" layout="column" flex>
+  </md-sidenav>
+  
+  <md-content id = "content" layout="column" flex>
 
-			<div ng-view></div>
+    <div ng-view></div>
 
-		</md-content>
+  </md-content>
 
-	</div>
+</div>

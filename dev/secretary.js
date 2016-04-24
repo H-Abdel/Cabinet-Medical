@@ -67,15 +67,15 @@
 
 	cabinetModule.config(function ($routeProvider) {
 
-			$routeProvider.when("/home", {
-					templateUrl: "js/cabinetMedical/infoCabinet.html"
-			}).when("/infirmiers", {
-					templateUrl: "js/infirmier/infirmier.html"
-			}).when("/nouveauPat", {
-					templateUrl: "js/patient/formulaire.html"
-			}).when("/patients", {
-					templateUrl: "js/patient/patient.html"
-			});
+					$routeProvider.when("/home", {
+									templateUrl: "js/cabinetMedical/infoCabinet.html"
+					}).when("/infirmiers", {
+									templateUrl: "js/infirmier/infirmier.html"
+					}).when("/nouveauPat", {
+									templateUrl: "js/patient/formulaire.html"
+					}).when("/patients", {
+									templateUrl: "js/patient/patient.html"
+					});
 	});
 
 	// Noyau
@@ -85,6 +85,7 @@
 	__webpack_require__(19)(cabinetModule);
 	//require("./infirmier/infirmier.js")(cabinetModule);
 	//require("./patient/patient.js")(cabinetModule);
+	//require("./patient/formulaire.js")(cabinetModule);
 
 /***/ },
 /* 2 */
@@ -61494,12 +61495,14 @@
 
 	var proxyNF = function proxyNF($http) {
 
+				// ------------------------------------------
+				// Récupère ce qu'il y a dans les balises XML
+				// ------------------------------------------
 				this.getData = function (src) {
 							return $http.get("data/cabinetInfirmier.xml").then(processData);
 				};
 
 				function processData(response) {
-							// Récupère ce qu'il y a dans les balises XML
 							var xmlDoc = new DOMParser().parseFromString(response.data, "application/xml");
 
 							// Infirmiers
@@ -61550,58 +61553,34 @@
 							};
 				}
 
-				/*
-	   <<<<<<< HEAD
-	       // 
-	       this.addPatient = function (patient) {
-	   	
-	       };
-	   
-	       // 
-	       this.delPatient = function (patient) {
-	   	
-	       };
-	   
-	       // 
-	       this.affectPatient = function (patient) {
-	   	
-	       };
-	   
-	       // 
-	       this.desaffectPatient = function (patient) {
-	   	
-	       };
-	   
-	   */
+				// --------------------------------------
+				// Fonctions pour modifier le fichier XML
+				// --------------------------------------
 
 				this.ajouterPatient = function (patient) {
 							return $http({
 										method: 'POST',
 										url: "/addPatient",
-										data: patient,
-										header: { 'Content-Type': 'application/x-www-form-urlencoded' }
-							}).then(function (responce) {}, function (responce) {});
+										data: patient
+							});
 				};
 
-				/*
-	   
-	       this.affectationPatient = function(infirmier) {
-	   	return $http({
-	   	    method: 'POST',
-	   	    url: "/affectation",
-	   	    data: infirmier
-	   	});
-	       };
-	   
-	       this.desaffecterPatient = function(id){
-	       	return $http({
-	       	    method: 'POST',
-	       	    url: "/desaffectation",
-	       	    data: id,
-	       	    header: {"Content-Type": "application/json"}
-	       	});
-	       };
-	   */
+				this.affectationPatient = function (infirmier) {
+							return $http({
+										method: 'POST',
+										url: "/affectation",
+										data: infirmier
+							});
+				};
+
+				this.desaffecterPatient = function (id) {
+							return $http({
+										method: 'POST',
+										url: "/desaffectation",
+										data: id,
+										header: { "Content-Type": "application/json" }
+							});
+				};
 	};
 
 	proxyNF.$inject = ["$http"];
@@ -61622,29 +61601,73 @@
 	__webpack_require__(21);
 
 	module.exports = function (moduleAngular) {
-	    var proxyNF = __webpack_require__(18)(moduleAngular);
+				var proxyNF = __webpack_require__(18)(moduleAngular);
 
-	    var controller = function controller(proxyNF) {
-	        // Cette fonction sera appelée pour instancier un cabinet
-	        var that = this;
+				var controller = function controller(proxyNF) {
+							// Cette fonction sera appelée pour instancier un cabinet
+							var that = this;
 
-	        proxyNF.getData(this.src).then(function (cabinetMedicalJS) {
-	            that.data = cabinetMedicalJS;
-	            console.log(that.data);
-	        });
-	        var data = proxyNF.getData(this.src);
-	        console.log(data);
-	    };
+							proxyNF.getData(this.src).then(function (cabinetMedicalJS) {
+										that.data = cabinetMedicalJS;
+										console.log(that.data);
+							});
 
-	    controller.$inject = ["proxyNF"]; // Injection de dépendances
+							// ------------------------------
+							// Fonctions pour formulaire.html
+							// ------------------------------
 
-	    moduleAngular.component("cabinetMedical", {
-	        template: template,
-	        bindings: {
-	            titre: "@"
-	        },
-	        controller: controller
-	    });
+							that.reset = function () {
+										that.newPatient = {
+													patientName: "",
+													patientForname: "",
+													patientNumber: 0,
+													patientSex: "",
+													patientBirthday: "",
+													patientFloor: 0,
+													patientStreet: "",
+													patientPostalCode: "",
+													patientCity: ""
+										};
+							};
+
+							function generateId() {
+										var p = that.newPatient;
+										var newId = p.patientSex == "M" ? 100000000000000 : 200000000000000;
+										newId += parseInt(p.patientBirthday.substring(2, 4)) * 1000000000000;
+										newId += parseInt(p.patientBirthday.substring(6, 8)) * 10000000000;
+										newId += Math.random() * 100000000;
+										return newId;
+
+										// Ces deux dernières lignes vérfie si l'id est unique, mais en fait ça pose problème
+										// car Angular génère une boucle while à l'intérieur de cette fonction generateId
+										// et boucle while + recursion = explosion (je pense)...
+
+										// var isIdUnique = (that.data.patients.filter( function(p) {p.id == newId} ) == []);
+										// return (isIdUnique ? newId : generateId());
+							}
+
+							that.ajouterNewPatient = function () {
+										// checks
+										that.newPatient.patientNumber = generateId();
+										that.newPatient.patientFloor = (~';_;' ^ [{/*~*/}]) >>> (!'(!' | !!'!|!' - - +"(✿◠‿◠)");
+										var date = that.newPatient.patientBirthday;
+										that.newPatient.patientBirthday = /\d{4}\-\d{2}\-\d{2}/.test(date) ? date : "0000-00-00";
+										var code = that.newPatient.patientPostalCode;
+										that.newPatient.patientPostalCode = /\d{5}/.test(code) ? code : "00000";
+
+										proxyNF.ajouterPatient(that.newPatient);
+							};
+				};
+
+				controller.$inject = ["proxyNF"]; // Injection de dépendances
+
+				moduleAngular.component("cabinetMedical", {
+							template: template,
+							bindings: {
+										titre: "@"
+							},
+							controller: controller
+				});
 	};
 
 	// Pour drag and drop : ngDraggable
@@ -61653,7 +61676,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "\t<md-toolbar layout = \"row\">\n\t\t<md-button class=\"menu\" ng-href=\"#/home\" layout=\"column\">\n\t\t\t<md-icon md-svg-src = \"../../images/icons/home.svg\"></md-icon>\n\t\t</md-button>\n\t\t<h1 layout=\"column\"> Cabinet Pas Trop Medical</h1>\n\t</md-toolbar>\n\n\t<div layout = \"row\" flex>\n\t\t\n\t\t<md-sidenav md-component-id=\"sidenav-left\" md-is-locked-open=\"true\">\n\n\t\t\t<md-content layout-padding layout=\"column\">\n\t\t\t\t\n\t\t\t\t<div layout=row>\n\t\t\t\t<md-button ng-href=\"#/infirmiers\">\n\t\t\t\t\t<md-icon md-svg-src = \"../../images/icons/interface.svg\"></md-icon>\n\t\t\t\t\tInfirmiers\n\t\t\t\t</md-button>\n\t\t\t\t</div>\n\t\t\t\t<div layout=\"row\">\n\t\t\t\t<md-button ng-href=\"#/patients\">\n\t\t\t\t\t<md-icon md-svg-src = \"../../images/icons/interface.svg\"></md-icon>\n\t\t\t\t\tPatients\n\t\t\t\t</md-button>\n\t\t\t\t</div>\n\t\t\t\t<div layout=\"row\">\n\t\t\t\t<md-button ng-href=\"#/nouveauPat\">\n\t\t\t\t\t<md-icon md-svg-src = \"../../images/icons/signs.svg\"></md-icon>\n\t\t\t\t\tAjouter Nouveau Patient\n\t\t\t\t</md-button>\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t</md-content>\n\n\t\t</md-sidenav>\n\t\n\t\t<md-content id = \"content\" layout=\"column\" flex>\n\n\t\t\t<div ng-view></div>\n\n\t\t</md-content>\n\n\t</div>\n"
+	module.exports = "<md-toolbar layout = \"row\">\n  <md-button class=\"menu\" ng-href=\"#/home\" layout=\"column\">\n    <md-icon md-svg-src = \"../../images/icons/home.svg\"></md-icon>\n  </md-button>\n  <h1 layout=\"column\">Cabinet Pas Trop Médical</h1>\n</md-toolbar>\n\n<div layout = \"row\" flex>\n  \n  <md-sidenav md-component-id=\"sidenav-left\" md-is-locked-open=\"true\">\n\n    <md-content layout-padding layout=\"column\">\n      \n      <div layout=row>\n\t<md-button ng-href=\"#/infirmiers\">\n\t  <md-icon md-svg-src = \"../../images/icons/interface.svg\"></md-icon>\n\t  Infirmiers\n\t</md-button>\n      </div>\n      <div layout=\"row\">\n\t<md-button ng-href=\"#/patients\">\n\t  <md-icon md-svg-src = \"../../images/icons/interface.svg\"></md-icon>\n\t  Patients\n\t</md-button>\n      </div>\n      <div layout=\"row\">\n\t<md-button ng-href=\"#/nouveauPat\">\n\t  <md-icon md-svg-src = \"../../images/icons/signs.svg\"></md-icon>\n\t  Ajouter Nouveau Patient\n\t</md-button>\n      </div>\n      \n    </md-content>\n\n  </md-sidenav>\n  \n  <md-content id = \"content\" layout=\"column\" flex>\n\n    <div ng-view></div>\n\n  </md-content>\n\n</div>\n"
 
 /***/ },
 /* 21 */

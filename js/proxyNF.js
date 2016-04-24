@@ -1,11 +1,13 @@
 var proxyNF = function($http) {
 
+    // ------------------------------------------
+    // Récupère ce qu'il y a dans les balises XML
+    // ------------------------------------------
     this.getData = function(src) {
 	return $http.get("data/cabinetInfirmier.xml").then(processData);
     };
 
     function processData(response) {
-	// Récupère ce qu'il y a dans les balises XML
 	var xmlDoc = new DOMParser().parseFromString(response.data, "application/xml");
 
 	// Infirmiers
@@ -15,7 +17,7 @@ var proxyNF = function($http) {
 		id: i.getAttribute("id"),
 		nom: i.querySelector("nom").textContent,
 		prenom: i.querySelector("prenom").textContent,
-		photo: 	i.querySelector("photo").textContent,
+		photo:	i.querySelector("photo").textContent,
 		patients: []
 	    };
 	};
@@ -56,43 +58,17 @@ var proxyNF = function($http) {
 	};
     }
 
-/*
-<<<<<<< HEAD
-    // 
-    this.addPatient = function (patient) {
-	
-    };
-
-    // 
-    this.delPatient = function (patient) {
-	
-    };
-
-    // 
-    this.affectPatient = function (patient) {
-	
-    };
-
-    // 
-    this.desaffectPatient = function (patient) {
-	
-    };
-
-*/
+    // --------------------------------------
+    // Fonctions pour modifier le fichier XML
+    // --------------------------------------
 
     this.ajouterPatient = function(patient) {
 	return $http({
-            method: 'POST',
-            url: "/addPatient",
-            data: patient,
-            header: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).then(
-			function (responce) {},
-			function (responce) {}
-        );
+	    method: 'POST',
+	    url: "/addPatient",
+	    data: patient
+	});
     };
-
-/*
 
     this.affectationPatient = function(infirmier) {
 	return $http({
@@ -103,16 +79,16 @@ var proxyNF = function($http) {
     };
 
     this.desaffecterPatient = function(id){
-    	return $http({
-    	    method: 'POST',
-    	    url: "/desaffectation",
-    	    data: id,
-    	    header: {"Content-Type": "application/json"}
-    	});
+	return $http({
+	    method: 'POST',
+	    url: "/desaffectation",
+	    data: id,
+	    header: {"Content-Type": "application/json"}
+	});
     };
-*/
 
 };
+
 
 
 
