@@ -16,16 +16,15 @@
 	<br />
 	Sexe : 
 	<input type="radio" ng-model="$ctrl.newPatient.patientSex" value="M" />M
-    <input type="radio" ng-model="$ctrl.newPatient.patientSex" value="F" />F<br />
-
+	<input type="radio" ng-model="$ctrl.newPatient.patientSex" value="F" />F<br />
 	<br />
 
 	<md-input-container>
 	    <label for="patientNumber">10 derniers chiffres du n° de sécurité sociale</label>
 	    <input name="social" type="text" ng-model="$ctrl.newPatient.patientNumber" ng-pattern="/^[0-9]{10}$/" required>
-	    <div ng-messages="AjouterPatient.social.$error">
+	    <!--<div ng-messages="AjouterPatient.social.$error">
 	        <div ng-message="pattern","required"> SSN composé de 15 chiffres </div>
-	    </div>
+	    </div>-->
 	</md-input-container><br />
 
 	<md-input-container>

@@ -33,15 +33,15 @@ module.exports = function(moduleAngular) {
 	
 	function generateId() {
 	    var p = that.newPatient;
-	    var newId = (p.patientSex == "M" ? 100000000000000 : 200000000000000);
+	    var newId = (p.patientSex === "M" ? 100000000000000 : 200000000000000);
 	    newId += parseInt(p.patientBirthday.substring(2, 4)) * 1000000000000;
 	    newId += parseInt(p.patientBirthday.substring(6, 8)) * 10000000000;
 	    return newId;
 	}
 
 	that.ajouterNewPatient = function() {
-	    that.newPatient.patientNumber = generateId() + that.newPatient.patientNumber;
-	    that.newPatient.patientFloor = ((~(';_;'))^[{/*~*/}])>>>(!'(!'|!!'!|!'-(-+"(✿◠‿◠)"));
+	    that.newPatient.patientNumber = parseInt(generateId()) + parseInt(that.newPatient.patientNumber);
+	    // that.newPatient.patientFloor = ((~(';_;'))^[{/*~*/}])>>>(!'(!'|!!'!|!'-(-+"(✿◠‿◠)");
 	    var date = that.newPatient.patientBirthday;
 	    that.newPatient.patientBirthday = ((/\d{4}\-\d{2}\-\d{2}/).test(date) ? date : "0000-00-00");
 	    var code = that.newPatient.patientPostalCode;
@@ -49,7 +49,6 @@ module.exports = function(moduleAngular) {
 
 	    proxyNF.ajouterPatient(that.newPatient);
 	};
-	
     };
 
     controller.$inject = [ "proxyNF" ]; // Injection de dépendances
