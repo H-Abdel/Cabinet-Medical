@@ -14,16 +14,10 @@
 	</md-input-container>
 
 	<br />
-	
-	<md-input-container>
-		<md-checkbox ng-model="$$ctrl.newPatient.patientSex" ng-value="F">
-		 F
-		</md-checkbox>
-		<md-checkbox ng-model="$$ctrl.newPatient.patientSex" ng-value="M">
-		 M
-		</md-checkbox>
-	</md-input-container>
-	
+	Sexe : 
+	<input type="radio" ng-model="$ctrl.newPatient.patientSex" value="M" />M
+    <input type="radio" ng-model="$ctrl.newPatient.patientSex" value="F" />F<br />
+
 	<br />
 
 	<md-input-container>
