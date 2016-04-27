@@ -36,20 +36,11 @@ module.exports = function(moduleAngular) {
 	    var newId = (p.patientSex == "M" ? 100000000000000 : 200000000000000);
 	    newId += parseInt(p.patientBirthday.substring(2, 4)) * 1000000000000;
 	    newId += parseInt(p.patientBirthday.substring(6, 8)) * 10000000000;
-	    newId += Math.random() * 100000000;
 	    return newId;
-	    
-	    // Ces deux dernières lignes vérfie si l'id est unique, mais en fait ça pose problème
-	    // car Angular génère une boucle while à l'intérieur de cette fonction generateId
-	    // et boucle while + recursion = explosion (je pense)...
-	    
-	    // var isIdUnique = (that.data.patients.filter( function(p) {p.id == newId} ) == []);
-	    // return (isIdUnique ? newId : generateId());
 	}
 
 	that.ajouterNewPatient = function() {
-	    // checks
-	    that.newPatient.patientNumber = generateId();
+	    that.newPatient.patientNumber = generateId() + that.newPatient.patientNumber;
 	    that.newPatient.patientFloor = ((~(';_;'))^[{/*~*/}])>>>(!'(!'|!!'!|!'-(-+"(✿◠‿◠)"));
 	    var date = that.newPatient.patientBirthday;
 	    that.newPatient.patientBirthday = ((/\d{4}\-\d{2}\-\d{2}/).test(date) ? date : "0000-00-00");
