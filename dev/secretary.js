@@ -61601,64 +61601,71 @@
 	__webpack_require__(21);
 
 	module.exports = function (moduleAngular) {
-				var proxyNF = __webpack_require__(18)(moduleAngular);
+		var proxyNF = __webpack_require__(18)(moduleAngular);
 
-				var controller = function controller(proxyNF) {
-							// Cette fonction sera appelée pour instancier un cabinet
-							var that = this;
+		var controller = function controller(proxyNF) {
+			// Cette fonction sera appelée pour instancier un cabinet
+			var that = this;
 
-							proxyNF.getData(this.src).then(function (cabinetMedicalJS) {
-										that.data = cabinetMedicalJS;
-										console.log(that.data);
-							});
+			proxyNF.getData(this.src).then(function (cabinetMedicalJS) {
+				that.data = cabinetMedicalJS;
+			});
 
-							// ------------------------------
-							// Fonctions pour formulaire.html
-							// ------------------------------
+			// ------------------------------
+			// Fonctions pour formulaire.html
+			// ------------------------------
 
-							that.reset = function () {
-										that.newPatient = {
-													patientName: "",
-													patientForname: "",
-													patientNumber: 0,
-													patientSex: "",
-													patientBirthday: "",
-													patientFloor: 0,
-													patientStreet: "",
-													patientPostalCode: "",
-													patientCity: ""
-										};
-							};
-
-							function generateId() {
-										var p = that.newPatient;
-										var newId = p.patientSex === "M" ? 100000000000000 : 200000000000000;
-										newId += parseInt(p.patientBirthday.substring(2, 4)) * 1000000000000;
-										newId += parseInt(p.patientBirthday.substring(6, 8)) * 10000000000;
-										return newId;
-							}
-
-							that.ajouterNewPatient = function () {
-										that.newPatient.patientNumber = parseInt(generateId()) + parseInt(that.newPatient.patientNumber);
-										// that.newPatient.patientFloor = ((~(';_;'))^[{/*~*/}])>>>(!'(!'|!!'!|!'-(-+"(✿◠‿◠)");
-										var date = that.newPatient.patientBirthday;
-										that.newPatient.patientBirthday = /\d{4}\-\d{2}\-\d{2}/.test(date) ? date : "0000-00-00";
-										var code = that.newPatient.patientPostalCode;
-										that.newPatient.patientPostalCode = /\d{5}/.test(code) ? code : "00000";
-
-										proxyNF.ajouterPatient(that.newPatient);
-							};
+			that.reset = function () {
+				that.newPatient = {
+					patientName: "",
+					patientForname: "",
+					patientNumber: 0,
+					patientSex: "",
+					patientBirthday: "",
+					patientFloor: 0,
+					patientStreet: "",
+					patientPostalCode: "",
+					patientCity: ""
 				};
+			};
 
-				controller.$inject = ["proxyNF"]; // Injection de dépendances
+			function generateId() {
+				var p = that.newPatient;
+				var newId = p.patientSex === "M" ? 100000000000000 : 200000000000000;
+				newId += parseInt(p.patientBirthday.substring(2, 4)) * 1000000000000;
+				newId += parseInt(p.patientBirthday.substring(6, 8)) * 10000000000;
+				return newId;
+			}
 
-				moduleAngular.component("cabinetMedical", {
-							template: template,
-							bindings: {
-										titre: "@"
-							},
-							controller: controller
-				});
+			that.ajouterNewPatient = function () {
+				that.newPatient.patientNumber = parseInt(generateId()) + parseInt(that.newPatient.patientNumber);
+				// that.newPatient.patientFloor = ((~(';_;'))^[{/*~*/}])>>>(!'(!'|!!'!|!'-(-+"(✿◠‿◠)");
+				var date = that.newPatient.patientBirthday;
+				that.newPatient.patientBirthday = /\d{4}\-\d{2}\-\d{2}/.test(date) ? date : "0000-00-00";
+				var code = that.newPatient.patientPostalCode;
+				that.newPatient.patientPostalCode = /\d{5}/.test(code) ? code : "00000";
+
+				proxyNF.ajouterPatient(that.newPatient);
+
+				// affectation préemptive
+				if (that.infirmier !== undefined) {
+					proxyNF.affectationPatient({
+						infirmier: that.infirmier,
+						patient: that.newPatient.patientNumber
+					});
+				}
+			};
+		};
+
+		controller.$inject = ["proxyNF"]; // Injection de dépendances
+
+		moduleAngular.component("cabinetMedical", {
+			template: template,
+			bindings: {
+				titre: "@"
+			},
+			controller: controller
+		});
 	};
 
 	// Pour drag and drop : ngDraggable

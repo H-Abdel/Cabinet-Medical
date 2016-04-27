@@ -10,7 +10,6 @@ module.exports = function(moduleAngular) {
 	
 	proxyNF.getData(this.src).then( function(cabinetMedicalJS) {
 	    that.data = cabinetMedicalJS;
-	    console.log(that.data);
 	});
 
 	// ------------------------------
@@ -46,8 +45,17 @@ module.exports = function(moduleAngular) {
 	    that.newPatient.patientBirthday = ((/\d{4}\-\d{2}\-\d{2}/).test(date) ? date : "0000-00-00");
 	    var code = that.newPatient.patientPostalCode;
 	    that.newPatient.patientPostalCode = ((/\d{5}/).test(code) ? code : "00000");
-
+	    
 	    proxyNF.ajouterPatient(that.newPatient);
+
+
+	    // affectation préemptive
+	    if (that.infirmier !== undefined) {
+		proxyNF.affectationPatient({
+		    infirmier : that.infirmier,
+		    patient   : that.newPatient.patientNumber
+		});
+	    }
 	};
     };
 
